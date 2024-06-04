@@ -1,10 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const Docker = require('dockerode');
-
 const app = express();
 const docker = new Docker();
 
+require('dotenv').config();
+
+console.log(process.env.PYTHON_IMAGE);
 
 app.use(bodyParser.json());
 
