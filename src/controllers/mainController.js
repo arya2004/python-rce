@@ -18,7 +18,8 @@ router.post('/', async (req, res) => {
         const { code } = req.body;
 
         //let output = await dockerService.runPythonCode(code);
-        let output = await childService.runChildCode(code);
+        let output = await childService.spawnChildCode(code);
+        //let output = await childService.execChildCode(code);
        
 
         // Save the output to MongoDB

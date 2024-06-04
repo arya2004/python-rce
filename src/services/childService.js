@@ -1,6 +1,7 @@
 const { spawn } = require('child_process');
+const { exec } = require('child_process');
 
-const runChildCode = (code) => {
+const spawnChildCode = (code) => {
     return new Promise((resolve, reject) => {
         const process = spawn('python', ['-c', code]);
 
@@ -29,4 +30,18 @@ const runChildCode = (code) => {
     });
 };
 
-  module.exports = { runChildCode };
+
+
+const execChildCode = (code) => {
+    return new Promise((resolve, reject) => {
+        exec(`python -c "${code.replace(/"/g, '\\"')}"`, (error, stdout, stderr) => {
+            if (error) {
+                reject(stderr || error.message);
+            } else {
+                resolve(stdout);
+            }
+        });
+    });
+};
+
+module.exports = { execChildCode, spawnChildCode };
