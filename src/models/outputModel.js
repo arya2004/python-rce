@@ -13,3 +13,5 @@ const outputSchema = new Schema({
 const OutputModel = mongoose.model('Output', outputSchema);
 
 module.exports = OutputModel;
+
+

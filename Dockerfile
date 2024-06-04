@@ -1,11 +1,25 @@
-# Use the official Python Alpine image from the Docker Hub
-FROM python:3.9-alpine
+# Use Node.js LTS version as the base image
+FROM node:lts
 
-# Set the working directory in the container
+# Set the working directory inside the container
 WORKDIR /usr/src/app
 
-# Copy the current directory contents into the container at /usr/src/app
+# Install Python and pip
+RUN apt-get update && \
+    apt-get install -y python3 python3-pip && \
+    apt-get clean
+
+# Copy package.json and package-lock.json to the working directory
+COPY package*.json ./
+
+# Install Node.js dependencies
+RUN npm install
+
+# Copy the rest of the application code
 COPY . .
 
-# Run the command to execute the Python code
-CMD ["python", "./your-daemon-or-main-script.py"]
+# Expose port 3000
+EXPOSE 3000
+
+# Start the Express.js application
+CMD [ "node", "src/index.js" ]

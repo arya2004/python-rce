@@ -1,88 +1,52 @@
+// Import required modules
 const express = require('express');
-const bodyParser = require('body-parser');
-const Docker = require('dockerode');
+const { Redis } = require('ioredis');
+
+// Create an Express application
 const app = express();
-const docker = new Docker();
-require('dotenv').config();
+const port = 3000;
 
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-
-// Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI, {
-
-  
+// Create a Redis client
+const client = new Redis({
+    host: 'localhost',
+    port: 6379,
+    db: 0,
+});
+// Handle Redis connection errors
+client.on('error', (err) => {
+    console.log('Redis Error:', err);
 });
 
-// Define a schema for your data
-const outputSchema = new Schema({
-  output: String,
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-});
+// Middleware to parse JSON bodies
+app.use(express.json());
 
-// Create a model based on the schema
-const OutputModel = mongoose.model('Output', outputSchema);
-
-require('dotenv').config();
-
-console.log(process.env.PYTHON_IMAGE);
-
-app.use(bodyParser.json());
-
-
-app.post('/', async (req, res) => {
+// Endpoint to set data in Redis
+app.post('/set', async (req, res) => {
+    const { key, value } = req.body;
     try {
-      const { code } = req.body;
-  
-      // Create a Docker container
-      const container = await docker.createContainer({
-        Image: 'python:3.9.19-alpine3.20',
-        AttachStdout: true,
-        AttachStderr: true,
-        Tty: true,
-        Cmd: ['python', '-c', code],
-      });
-  
-      await container.start();
-  
-      const logs = await container.logs({
-        follow: true,
-        stdout: true,
-        stderr: true,
-      });
-  
-      let output = '';
-      logs.on('data', (chunk) => {
-        output += chunk.toString('utf8');
-        console.log(chunk.toString('utf8')); 
-      });
-  
-      await new Promise((resolve, reject) => {
-        container.wait((err, data) => {
-          if (err) reject(err);
-          else resolve(data);
-        });
-      });
-  
-      // Save the output to MongoDB
-      const newOutput = new OutputModel({ output });
-      await newOutput.save();
-  
-      res.status(200).json({ output });
-  
-      await container.remove();
+        await client.set(key, value);
+        res.status(200).send('Data set successfully');
     } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).send('Error setting data in Redis');
     }
-  });
-  
+});
 
-// Start the server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+// Endpoint to get data from Redis
+app.get('/get/:key', async (req, res) => {
+    const key = req.params.key;
+    try {
+        const value = await client.get(key);
+        if (value === null) {
+            res.status(404).send('Key not found in Redis');
+        } else {
+            res.status(200).send(value);
+        }
+    } catch (err) {
+        res.status(500).send('Error getting data from Redis');
+    }
+});
+
+// Start the Express server
+app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
 });
