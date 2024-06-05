@@ -4,14 +4,23 @@ const mainController = require('./controllers/mainController');
 const executionController = require('./controllers/executionController');
 const gameController = require('./controllers/gameController');
 const bodyParserMiddleware = require('./middlewares/bodyParserMiddleware');
+const Redis = require('ioredis');
 const { PORT, MONGODB_URI } = require('./config');
 
 const app = express();
 
 app.use(bodyParserMiddleware);
 
+
+
+const redis = new Redis();
+
+redis.on('error', (err) => {
+    console.error('Redis Error:', err);
+});
+
 //app.use('/', mainController);
-app.use('/', executionController);
+app.use('/', executionController(redis));
 app.use('/game', gameController);
 
 // Connect to MongoDB

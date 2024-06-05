@@ -1,4 +1,5 @@
 import resource
+import sys
 from datetime import datetime
 
 # Set CPU time limit to 2 seconds
@@ -12,9 +13,19 @@ print("Starting a task that will consume resources...")
 
 try:
     while True:
-        print(datetime.now())
+        sys.stdout.flush()  # Flush the stdout buffer
         pass  # Infinite loop to consume CPU time
+except KeyboardInterrupt:
+    print("Code terminated by user")
+except MemoryError:
+    print("Code terminated due to memory limit reached")
 except Exception as e:
     print(f"Exception occurred: {e}")
 finally:
     print("Finished task")
+
+
+
+import os
+
+print(os.cpu_count())
