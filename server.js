@@ -29,7 +29,7 @@ app.post('/', async (req, res) => {
 
     const logs = await container.logs({
       follow: true,
-      stdout: true,
+      stdout: true, 
       stderr: true,
     });
 

@@ -1,0 +1,19 @@
+{
+    "chapter": "Chapter 1",
+    "missions": "Mission 1",
+    "taskNo": 1,
+    "Id": "game1",
+    "sampleCode": "num1 = 5\nnum2 = 10\nnum3 = num1 + num2\nprint(num3)",
+    "sampleCodeOutput": "15",
+    "hiddenTestCase": "num1 = 15\nnum2 = 20\n######\nprint(num3)",
+    "hiddenTestCaseOutput": "35",
+    "boilerplateCode": "num1 = 5\nnum2 = 10\n######\nprint(num3)"
+}
+    
+{
+
+    "taskNo": 1,
+    "codeChunks": ["num3 = num1 + num2"]
+  
+}
+  

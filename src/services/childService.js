@@ -10,6 +10,7 @@ const spawnChildCode = (code) => {
 
         process.stdout.on('data', (data) => {
             stdout += data.toString('utf8');
+            console.log(stdout)
         });
 
         process.stderr.on('data', (data) => {
@@ -41,7 +42,7 @@ const execChildCode = (code) => {
                 resolve(stdout);
             }
         });
-    });
+    }); 
 };
 
 module.exports = { execChildCode, spawnChildCode };

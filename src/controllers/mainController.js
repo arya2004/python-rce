@@ -8,7 +8,7 @@ const router = express.Router();
 router.get('/', async (req, res) => {
  
     
-        res.status(200).json("webwebjwjebfj");
+        res.status(200).json("main controller");
    
 });
 
