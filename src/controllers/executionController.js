@@ -9,7 +9,8 @@ const createRouter = (redis) => {
 
 
     const checkForSlurs = (req, res, next) => {
-        const slurRegex = /import|print/gi; 
+        const slurRegex = /\b(import|print)\b/gi;
+
 
         if (req.method === 'POST' && req.body && slurRegex.test(JSON.stringify(req.body))) {
             const ip = req.ip;
@@ -54,7 +55,7 @@ const createRouter = (redis) => {
            
             //let result = await dockerService.runPythonCode(combinedCode);
             let result = await childService.spawnChildCode(combinedCode); 
-            //let result = await dockerService.runPythonCode(combinedCode);
+         
 
             const newOutput = new OutputModel({ result });
             await newOutput.save();
