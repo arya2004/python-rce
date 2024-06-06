@@ -1,4 +1,4 @@
-{
+[{
     "chapter": "Chapter 1",
     "missions": "Mission 1",
     "taskNo": 1,
@@ -8,12 +8,21 @@
     "hiddenTestCase": "num1 = 15\nnum2 = 20\n######\nprint(num3)",
     "hiddenTestCaseOutput": "35",
     "boilerplateCode": "num1 = 5\nnum2 = 10\n######\nprint(num3)"
-}
-    
+},
 {
 
     "taskNo": 1,
     "codeChunks": ["num3 = num1 + num2"]
   
-}
-  
+},
+{
+    "chapter": "Chapter 2",
+    "missions": "Mission 2",
+    "taskNo": 3,
+    "Id": "game3",
+    "sampleCode": "num1 = 5\nnum2 = 10\nnum3 = num1 + num2\nprint(num3)",
+    "hiddenTestCase": "num1 = 20\nnum2 = 2\nnum3 = num1 + num2\nprint(num3)",
+    "hiddenTestCaseBoilerplate": "num1 = 20\nnum2 = 2\n######\nprint(num3)",
+    "boilerplateCode": "num1 = 5\nnum2 = 10\n######\nprint(num3)"
+  }
+]

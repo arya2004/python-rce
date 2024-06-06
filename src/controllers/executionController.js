@@ -46,21 +46,36 @@ const createRouter = (redis) => {
 
         
             let combinedCode = game.boilerplateCode;
+            let hiddenCode = game.hiddenTestCaseBoilerplate;
 
+           
 
             for (const codeChunk of codeChunks) {
                 combinedCode = combinedCode.replace('######', codeChunk);
+                hiddenCode = hiddenCode.replace('######', codeChunk);
             }
+            console.log(hiddenCode, "hiddenCode")
 
            
             //let result = await dockerService.runPythonCode(combinedCode);
             let result = await childService.spawnChildCode(combinedCode); 
+            let hiddenResult = await childService.spawnChildCode(hiddenCode);
+            console.log('hiddenResult', hiddenResult);
+            console.log('result', result);
          
 
             const newOutput = new OutputModel({ result });
             await newOutput.save();
 
-            res.status(200).json({ result });
+            console.log(result  == game.sampleCodeOutput, " lel",hiddenResult == game.hiddenTestCaseOutput)
+
+            if(hiddenResult == game.hiddenTestCaseOutput && result == game.sampleCodeOutput){
+                res.status(200).json({ result, boolean : true  });
+            }else{
+                res.status(200).json({ result, boolean : false  });
+            }
+
+           
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: error });

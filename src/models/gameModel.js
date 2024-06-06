@@ -30,6 +30,10 @@ const gameSchema = new Schema({
         type: String,
         required: true
     },
+    hiddenTestCaseBoilerplate: {
+        type: String,
+        required: true
+    },
     hiddenTestCaseOutput: {
         type: String,
         required: true
