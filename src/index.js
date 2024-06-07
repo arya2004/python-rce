@@ -10,27 +10,34 @@ const { PORT, MONGODB_URI } = require('./config');
 
 const app = express();
 
+// Middleware to parse the body of incoming requests
 app.use(bodyParserMiddleware);
 
-
-
+// Initialize Redis client
 const redis = new Redis();
 
 redis.on('error', (err) => {
     console.error('Redis Error:', err);
 });
 
-//app.use('/', mainController);
+// Define routes
 app.use('/', executionController(redis));
 app.use('/s', singleSpawnController(redis));
 app.use('/game', gameController);
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI, {})
+mongoose.connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
     .then(() => {
         console.log('Connected to MongoDB');
-        app.listen(process.env.PORT, () => {
-            console.log(`Server running on port ${process.env.PORT}`);
+        app.listen(PORT, () => {
+            console.log(`Server running on port ${PORT}`);
         });
     })
     .catch((err) => console.error('MongoDB connection error:', err));
+
+console.log("Server setup completed successfully");
+
+module.exports = app;
