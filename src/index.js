@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const mainController = require('./controllers/mainController');
 const executionController = require('./controllers/executionController');
+const singleSpawnController = require('./controllers/singleSpawnController');
 const gameController = require('./controllers/gameController');
 const bodyParserMiddleware = require('./middlewares/bodyParserMiddleware');
 const Redis = require('ioredis');
@@ -21,6 +22,7 @@ redis.on('error', (err) => {
 
 //app.use('/', mainController);
 app.use('/', executionController(redis));
+app.use('/s', singleSpawnController(redis));
 app.use('/game', gameController);
 
 // Connect to MongoDB

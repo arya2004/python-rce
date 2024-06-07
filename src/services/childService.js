@@ -10,7 +10,7 @@ const spawnChildCode = (code) => {
 
         process.stdout.on('data', (data) => {
             stdout += data.toString('utf8');
-            console.log(stdout)
+            //console.log(stdout)
         });
 
         process.stderr.on('data', (data) => {
