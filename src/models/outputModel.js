@@ -8,7 +8,6 @@ const { Schema } = mongoose;
 const outputSchema = new Schema({
     output: {
         type: String,
-        required: true,
         trim: true
     },
     createdAt: {

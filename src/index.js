@@ -21,14 +21,13 @@ redis.on('error', (err) => {
 });
 
 // Define routes
-app.use('/', executionController(redis));
-app.use('/s', singleSpawnController(redis));
+//app.use('/', executionController(redis));
+app.use('/', singleSpawnController(redis));
 app.use('/game', gameController);
 
 // Connect to MongoDB
 mongoose.connect(MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
+
 })
     .then(() => {
         console.log('Connected to MongoDB');
