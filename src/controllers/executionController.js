@@ -31,7 +31,35 @@ const createRouter = (redis) => {
 
     router.get('/', async (req, res) => {
         console.log(`GET request from IP: ${req.ip}`);
-        res.status(200).json("Execution Controller is operational.");
+        res.status(200).json("Execution Controller is operational. test 4");
+    });
+
+    router.get('/py', async (req, res) => {
+        console.log(`GET request from IP: ${req.ip}`);
+        try {
+            
+
+            let combinedCode = "num1 = 5\nnum2 = 10\nnum3 = num1 + num2\nprint(num3)";
+            let hiddenCode = "print('hello')";
+           
+
+
+
+            let result = await childService.spawnChildCode(combinedCode);
+
+        
+
+           
+            console.log(`Result split by GUID: ${result}`);
+
+            
+ 
+
+            res.status(200).json({ result, success: true });
+        } catch (error) {
+            console.error(`Error processing request: ${error}`);
+            res.status(500).json({ error: error });
+        }
     });
 
     router.post('/', checkForSlurs, async (req, res) => {

@@ -39,7 +39,7 @@ const createRouter = (redis) => {
      */
     router.get('/', async (req, res) => {
         console.log(`GET request from IP: ${req.ip}`);
-        res.status(200).json("Execution Controller is operational.");
+        res.status(200).json("Single Spawn Controller is operational.");
     });
 
     /**

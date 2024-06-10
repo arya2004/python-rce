@@ -21,7 +21,7 @@ redis.on('error', (err) => {
 });
 
 // Define routes
-//app.use('/', executionController(redis));
+app.use('/test', executionController(redis));
 app.use('/', singleSpawnController(redis));
 app.use('/game', gameController);
 
