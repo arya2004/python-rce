@@ -1,30 +1,4 @@
 services:
-  redis:
-      image: redis:latest
-      ports:
-        - 6379:6379
-      command: ["redis-server", "--appendonly", "yes"]
-      volumes:
-        - redis-data:/data
-
-  redis-commander:
-    image: rediscommander/redis-commander:latest  
-    environment:
-      - REDIS_HOSTS=local:redis:6379
-      - HTTP_USER=root
-      - HTTP_PASSWORD=secret
-    ports:
-      - 8081:8081
-    depends_on:
-      - redis
-  
-  # Mongodb service
-  mongo_db:
-    container_name: db_container
-    image: mongo:latest
-    restart: always
-    volumes:
-      - mongo_data:/data/db
 
   # Node api service
   api:
@@ -34,11 +8,5 @@ services:
       - 3000:3000
     environment:
       PORT: 3000
-      MONGODB_URI: mongodb://mongo_db:27017
-      DB_NAME: sample-db
-    depends_on: 
-      - mongo_db
+      MONGODB_URI: mongodb+srv://aryapathak22:00601221@cluster0.vnck4ub.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
 
-volumes:
-  redis-data:
-  mongo_data: {}

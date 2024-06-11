@@ -73,13 +73,13 @@ const createRouter = (redis) => {
                 hiddenCode = hiddenCode.replace('######', codeChunk);
             }
 
-            let totalCombinedCode = `${combinedCode}\nprint("${guid}")\n${hiddenCode}`;
+            let totalCombinedCode = `${combinedCode}\nprint("${guid}")\r\n${hiddenCode}`;
             let result = await childService.spawnChildCode(totalCombinedCode);
 
             const newOutput = new OutputModel({ result });
             await newOutput.save();
 
-            const answerArray = result.split(`${guid}\r\n`);
+            const answerArray = result.split(`${guid}\n`);
             console.log(`Result split by GUID: ${answerArray}`);
 
             let first = answerArray[0];

@@ -14,7 +14,10 @@ const app = express();
 app.use(bodyParserMiddleware);
 
 // Initialize Redis client
+
 const redis = new Redis();
+
+
 
 redis.on('error', (err) => {
     console.error('Redis Error:', err);
@@ -24,10 +27,11 @@ redis.on('error', (err) => {
 app.use('/test', executionController(redis));
 app.use('/', singleSpawnController(redis));
 app.use('/game', gameController);
+app.use('/main', mainController);
 
 // Connect to MongoDB
 mongoose.connect(MONGODB_URI, {
-
+    
 })
     .then(() => {
         console.log('Connected to MongoDB');

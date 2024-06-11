@@ -8,7 +8,7 @@ const { spawn, exec } = require('child_process');
  */
 const spawnChildCode = (code) => {
     return new Promise((resolve, reject) => {
-        const process = spawn('python3', ['-c', code]);
+        const process = spawn('python', ['-c', code]);
 
         let stdout = '';
         let stderr = '';
