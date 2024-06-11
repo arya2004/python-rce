@@ -1,0 +1,23 @@
+{
+    "chapter": "ch2",
+    "missions": "m546",
+    "taskNo": "53",
+    "Id": "53",
+    "masterCode": "# This program adds two numbers\r\n\r\nnum1 = 1.5\r\nnum2 = 6.3\r\n\r\n# Add two numbers\r\nsum = num1 + num2\r\n\r\n# Display the sum\r\nprint(sum)\r\n",
+    "hiddenTestCases": [
+      "# This program adds two numbers\r\n\r\nnum1 = 1\r\nnum2 = 6\r\n\r\n# Add two numbers\r\nsum = num1 + num2\r\n\r\n# Display the sum\r\nprint(sum)\r\n",
+      "# This program adds two numbers\r\n\r\nnum1 = 16\r\nnum2 = 6\r\n\r\n# Add two numbers\r\nsum = num1 + num2\r\n\r\n# Display the sum\r\nprint(sum)\r\n",
+      "# This program adds two numbers\r\n\r\nnum1 = 1\r\nnum2 = 61\r\n\r\n# Add two numbers\r\nsum = num1 + num2\r\n\r\n# Display the sum\r\nprint(sum)\r\n"
+    ],
+    "hiddenTestCasesBoilerplate": [
+      "# This program adds two numbers\r\n\r\nnum1 = 1.5\r\nnum2 = 6.3\r\n\r\n# Add two numbers\r\n######\r\n\r\n# Display the sum\r\nprint(sum)\r\n",
+      "# This program adds two numbers\r\n\r\nnum1 = 16\r\nnum2 = 6\r\n\r\n# Add two numbers\r\n######\r\n\r\n# Display the sum\r\nprint(sum)\r\n",
+      "# This program adds two numbers\r\n\r\nnum1 = 1\r\nnum2 = 61\r\n\r\n# Add two numbers\r\n######\r\n\r\n# Display the sum\r\nprint(sum)\r\n"
+    ],
+    "hiddenTestCasesOutput": [
+      "s",
+      "22",
+      "62"
+    ],
+    "masterCodeBoilerplate": "# This program adds two numbers\r\n\r\nnum1 = 1.5\r\nnum2 = 6.3\r\n\r\n# Add two numbers\r\n######\r\n\r\n# Display the sum\r\nprint(sum)"
+  }

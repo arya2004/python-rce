@@ -23,34 +23,33 @@ const gameSchema = new Schema({
     Id: {
         type: String,
         required: true,
-        unique: true,
         description: "Unique identifier for the game"
     },
-    sampleCode: {
+    masterCode: {
         type: String,
         required: true,
         description: "Sample code provided for the task"
     },
-    sampleCodeOutput: {
+    masterCodeOutput: {
         type: String,
         description: "Output of the sample code"
     },
-    hiddenTestCase: {
-        type: String,
+    hiddenTestCases: {
+        type: [String],  
         required: true,
-        description: "Hidden test case for validating code"
+        description: "Hidden test cases for validating code"
     },
-    hiddenTestCaseBoilerplate: {
-        type: String,
+    hiddenTestCasesBoilerplate: {
+        type: [String],
         required: true,
         description: "Boilerplate code for hidden test case"
     },
-    hiddenTestCaseOutput: {
-        type: String,
+    hiddenTestCasesOutput: {
+        type: [String],
         required: true,
         description: "Expected output of the hidden test case"
     },
-    boilerplateCode: {
+    masterCodeBoilerplate: {
         type: String,
         required: true,
         description: "Boilerplate code provided for the task"

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            color: #555;
+        }
+        input[type="text"],
+        input[type="number"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button,
+        input[type="submit"] {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            border: none;
+            background-color: #28a745;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover,
+        input[type="submit"]:hover {
+            background-color: #218838;
+        }
+        .hidden-test-case {
+            margin-bottom: 15px;
+        }
+        .hidden-test-case-number {
+            display: inline-block;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        .delete-button {
+            background-color: #dc3545;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            float: right;
+        }
+        .delete-button:hover {
+            background-color: #c82333;
+        }
+    </style>
+    <script>
+        function addHiddenTestCase() {
+            const hiddenTestCaseContainer = document.getElementById('hiddenTestCaseContainer');
+            const hiddenTestCaseCount = hiddenTestCaseContainer.children.length + 1;
+
+            const hiddenTestCaseDiv = document.createElement('div');
+            hiddenTestCaseDiv.classList.add('hidden-test-case');
+
+            const hiddenTestCaseNumber = document.createElement('span');
+            hiddenTestCaseNumber.classList.add('hidden-test-case-number');
+            hiddenTestCaseNumber.textContent = `Test Case ${hiddenTestCaseCount}`;
+
+            const deleteButton = document.createElement('button');
+            deleteButton.classList.add('delete-button');
+            deleteButton.type = 'button';
+            deleteButton.textContent = 'Delete';
+            deleteButton.onclick = function() {
+                hiddenTestCaseContainer.removeChild(hiddenTestCaseDiv);
+                updateTestCaseNumbers();
+            };
+
+            const hiddenTestCaseLabel = document.createElement('label');
+            hiddenTestCaseLabel.textContent = 'Hidden Test Case:';
+            const hiddenTestCaseInput = document.createElement('textarea');
+            hiddenTestCaseInput.name = 'hiddenTestCases';
+            hiddenTestCaseInput.required = true;
+
+            const hiddenBoilerplateLabel = document.createElement('label');
+            hiddenBoilerplateLabel.textContent = 'Hidden Test Case Boilerplate:';
+            const hiddenBoilerplateInput = document.createElement('textarea');
+            hiddenBoilerplateInput.name = 'hiddenTestCasesBoilerplate';
+            hiddenBoilerplateInput.required = true;
+
+
+            hiddenTestCaseDiv.appendChild(hiddenTestCaseNumber);
+            hiddenTestCaseDiv.appendChild(deleteButton);
+            hiddenTestCaseDiv.appendChild(hiddenTestCaseLabel);
+            hiddenTestCaseDiv.appendChild(hiddenTestCaseInput);
+            hiddenTestCaseDiv.appendChild(hiddenBoilerplateLabel);
+            hiddenTestCaseDiv.appendChild(hiddenBoilerplateInput);
+
+            hiddenTestCaseContainer.appendChild(hiddenTestCaseDiv);
+        }
+
+        function updateTestCaseNumbers() {
+            const hiddenTestCaseContainer = document.getElementById('hiddenTestCaseContainer');
+            const testCases = hiddenTestCaseContainer.getElementsByClassName('hidden-test-case');
+            for (let i = 0; i < testCases.length; i++) {
+                const numberLabel = testCases[i].getElementsByClassName('hidden-test-case-number')[0];
+                numberLabel.textContent = `Test Case ${i + 1}`;
+            }
+        }
+
+        function handleSubmit(event) {
+            event.preventDefault(); // Prevent default form submission
+            const formData = new FormData(event.target);
+            const data = {};
+            formData.forEach((value, key) => {
+                if (!data[key]) {
+                    data[key] = value;
+                } else {
+                    if (!Array.isArray(data[key])) {
+                        data[key] = [data[key]];
+                    }
+                    data[key].push(value);
+                }
+            });
+            console.log(JSON.stringify(data, null, 2));
+            // You can also submit the form data via AJAX here if needed
+            // For now, we proceed with default submission
+            event.target.submit();
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Create a New Game</h1>
+        <form onsubmit="handleSubmit(event)" action="/games" method="post">
+            <label for="chapter">Chapter:</label>
+            <input type="text" id="chapter" name="chapter" required>
+
+            <label for="missions">Missions:</label>
+            <input type="text" id="missions" name="missions" required>
+
+            <label for="taskNo">Task Number:</label>
+            <input type="number" id="taskNo" name="taskNo" required>
+
+            <label for="Id">ID:</label>
+            <input type="text" id="Id" name="Id" required>
+
+            <label for="masterCode">Master Code:</label>
+            <textarea id="masterCode" name="masterCode" required></textarea>
+
+            <label for="hiddenTestCases">Hidden Test Cases:</label>
+            <div id="hiddenTestCaseContainer">
+                <div class="hidden-test-case">
+                    <span class="hidden-test-case-number">Test Case 1</span>
+                    <button type="button" class="delete-button" onclick="deleteHiddenTestCase(this)">Delete</button>
+                    <label>Hidden Test Case:</label>
+                    <textarea name="hiddenTestCases" required></textarea>
+                    <label>Hidden Test Case Boilerplate:</label>
+                    <textarea name="hiddenTestCasesBoilerplate" required></textarea>
+                    
+                </div>
+            </div>
+            <button type="button" onclick="addHiddenTestCase()">Add Hidden Test Case</button>
+
+            <label for="masterCodeBoilerplate">Master Code Boilerplate:</label>
+            <textarea id="masterCodeBoilerplate" name="masterCodeBoilerplate" required></textarea>
+
+            <input type="submit" value="Create Game">
+        </form>
+    </div>
+</body>
+</html>

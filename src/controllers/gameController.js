@@ -1,16 +1,15 @@
 const express = require('express');
 const Game = require('../models/gameModel');
 const childService = require('../services/childService');
-
+const { v4: uuidv4 } = require('uuid');
 const router = express.Router();
 
 /**
- * GET /games
- * Responds with a confirmation message.
+ * GET /games/new
+ * Render the create game form.
  */
-router.get('/', async (req, res) => {
-    console.log(`GET request from IP: ${req.ip}`);
-    res.status(200).json("Game Controller is operational.");
+router.get('/new', (req, res) => {
+    res.render('createGame');
 });
 
 /**
@@ -20,25 +19,37 @@ router.get('/', async (req, res) => {
  * @param {Object} req.body - The game data.
  */
 router.post('/', async (req, res) => {
-    const gameData = req.body;
+   
+    
 
-    try {
-        console.log(`Creating new game with data: ${JSON.stringify(gameData)}`);
+   console.log("\n\n", req.body, "\n\n")
 
-        let codeOutput = await childService.spawnChildCode(gameData.sampleCode);
-        gameData.sampleCodeOutput = codeOutput;
+        const gameData = req.body;
 
-        let codeOutputHidden = await childService.spawnChildCode(gameData.hiddenTestCase);
-        gameData.hiddenTestCaseOutput = codeOutputHidden;
+        try {
+            
 
-        const newGame = await Game.create(gameData);
+            let codeOutput = await childService.spawnChildCode(gameData.masterCode);
+            gameData.masterCodeOutput = codeOutput;
+            gameData.hiddenTestCasesOutput = []
 
-        console.log(`New game created with ID: ${newGame._id}`);
-        res.status(201).json(newGame);
-    } catch (error) {
-        console.error(`Error creating game: ${error}`);
-        res.status(500).json({ error: 'Server error' });
-    }
+            for (let i = 0; i < gameData.hiddenTestCases.length; i++) {
+                let codeOutputHidden = await childService.spawnChildCode(gameData.hiddenTestCases[i]);
+                console.log("codeOutputHidden: ", gameData.hiddenTestCasesOutput);
+                gameData.hiddenTestCasesOutput.push(codeOutputHidden);
+            }
+
+       
+            const newGame = await Game.create(gameData);
+
+            console.log(`New game created with ID: ${newGame._id}`);
+            res.status(201).json(newGame);
+
+           
+        } catch (error) {
+            console.error(`Error creating game: ${error}`);
+            res.status(500).json({ error: 'Server error' });
+        }
 });
 
 module.exports = router;
