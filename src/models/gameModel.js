@@ -30,6 +30,11 @@ const gameSchema = new Schema({
         required: true,
         description: "Sample code provided for the task"
     },
+    masterCodeBoilerplate: {
+        type: String,
+        required: true,
+        description: "Boilerplate code provided for the task"
+    },
     masterCodeOutput: {
         type: String,
         description: "Output of the sample code"
@@ -49,11 +54,7 @@ const gameSchema = new Schema({
         required: true,
         description: "Expected output of the hidden test case"
     },
-    masterCodeBoilerplate: {
-        type: String,
-        required: true,
-        description: "Boilerplate code provided for the task"
-    }
+    
 });
 
 /**
