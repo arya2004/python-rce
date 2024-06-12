@@ -66,17 +66,26 @@ const createRouter = (redis) => {
                 return res.status(404).json({ error: 'Task not found' });
             }
 
-            let combinedCode = game.boilerplateCode;
-            let hiddenCode = game.hiddenTestCaseBoilerplate;
+            let combinedCode = game.masterCodeBoilerplate;
+            let hiddenCode = game.hiddenTestCasesBoilerplate;
             const guid = uuidv4();
             console.log(`Generated GUID: ${guid}`);
 
             for (const codeChunk of codeChunks) {
                 combinedCode = combinedCode.replace('######', codeChunk);
-                hiddenCode = hiddenCode.replace('######', codeChunk);
+
+                for (let i = 0; i < hiddenCode.length; i++) {
+                    hiddenCode[i] = hiddenCode[i].replace('######', codeChunk);
+                }
+                
             }
 
-            let totalCombinedCode = `${combinedCode}\nprint("${guid}")\n${hiddenCode}`;
+            let totalCombinedCode = `${combinedCode}`;
+
+            for (let i = 0; i < hiddenCode.length; i++) {
+                totalCombinedCode += `\nprint("${guid}")\n${hiddenCode[i]}`;
+            }
+
             let result = await childService.spawnChildCode(totalCombinedCode);
 
             const newOutput = new OutputModel({ result });
@@ -86,11 +95,26 @@ const createRouter = (redis) => {
             //change below in production, remove \r
             const answerArray = result.split(`${guid}\r\n`);
             console.log(`Result split by GUID: ${answerArray}`);
+            console.log(`OG answer: ${game.hiddenTestCasesOutput}`);
 
-            let first = answerArray[0];
-            const isSuccessful = answerArray[1] == game.hiddenTestCaseOutput && answerArray[0] == game.sampleCodeOutput;
+            let userCodeOutput = answerArray[0];
+            let success = false;
+            if (userCodeOutput == game.masterCodeOutput) {
+                success = true;
+            }
+            
+            for (let i = 0; i < game.hiddenTestCasesOutput.length; i++) {
+                if (answerArray[i + 1] == game.hiddenTestCasesOutput[i]) {
+                    console.log(`Hidden test case ${i + 1} passed.`);
+                    success = true;
+                } else {
+                    success = false;
+                    break;
+                }
+            }
 
-            res.status(200).json({ first, success: isSuccessful });
+
+            res.status(200).json({ userCodeOutput, success });
         } catch (error) {
             console.error(`Error processing request: ${error}`);
             res.status(500).json({ error: 'Internal server error' });

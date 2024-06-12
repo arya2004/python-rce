@@ -42,18 +42,9 @@ const createRouter = (redis) => {
             let combinedCode = "num1 = 5\nnum2 = 10\nnum3 = num1 + num2\nprint(num3)";
             let hiddenCode = "print('hello')";
            
-
-
-
             let result = await childService.spawnChildCode(combinedCode);
-
-        
-
            
             console.log(`Result split by GUID: ${result}`);
-
-            
- 
 
             res.status(200).json({ result, success: true });
         } catch (error) {

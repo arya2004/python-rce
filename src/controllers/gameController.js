@@ -22,20 +22,41 @@ router.post('/', async (req, res) => {
    
     
 
-   console.log("\n\n", req.body, "\n\n")
+   //console.log("\n\n", req.body, "\n\n")
 
         const gameData = req.body;
 
         try {
             
+           
+            if(typeof(gameData.hiddenTestCases) == 'string'){
+                const temp = gameData.hiddenTestCases;
+                gameData.hiddenTestCases = [];
+                gameData.hiddenTestCases.push(temp);
+
+
+                const temp2 = gameData.hiddenTestCasesBoilerplate;
+                gameData.hiddenTestCasesBoilerplate = [];
+                gameData.hiddenTestCasesBoilerplate.push(temp2);
+            }
+
+            console.log("hidden", typeof(gameData.hiddenTestCases), gameData.hiddenTestCases);
+
+            console.log("gameData: ", gameData);    
 
             let codeOutput = await childService.spawnChildCode(gameData.masterCode);
             gameData.masterCodeOutput = codeOutput;
             gameData.hiddenTestCasesOutput = []
 
+            
+
+            
+
+            console.log("Hidden Test Cases: ", gameData.hiddenTestCases)
+
             for (let i = 0; i < gameData.hiddenTestCases.length; i++) {
                 let codeOutputHidden = await childService.spawnChildCode(gameData.hiddenTestCases[i]);
-                console.log("codeOutputHidden: ", gameData.hiddenTestCasesOutput);
+                //console.log("codeOutputHidden: ", gameData.hiddenTestCasesOutput);
                 gameData.hiddenTestCasesOutput.push(codeOutputHidden);
             }
 
